@@ -1,5 +1,4 @@
-# Actividad 3.1: Despliegue de una arquitectura distribuida con
-un balanceador de carga
+# Actividad 3.1: Despliegue de una arquitectura distribuida con un balanceador de carga
 
 Autores: Carlos Romero Cruz y Yulieth Alexandra Guiza Pinto
 
