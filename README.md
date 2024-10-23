@@ -3,7 +3,7 @@ un balanceador de carga
 
 Autores: Carlos Romero Cruz y Yulieth Alexandra Guiza Pinto
 
-Repositorio basado en la carpeta phpwebappv2 de [snwebapps](https://github.com/jrbalsas/asnwebapps).
+Repositorio basado en la carpeta phpwebappv2 de [asnwebapps](https://github.com/jrbalsas/asnwebapps).
 
 ## Instalación previa
 
@@ -74,6 +74,8 @@ $ docker compose down
 ```
 
 ## Consideraciones
+- Los archivos de las contraseñas se han incluido en el repositorio para facilitar las pruebas y ejecuciones.
+En un caso real estos archivos no se incluirían.
 - Se ha optado por el uso de [secretos de Docker](https://docs.docker.com/engine/swarm/secrets/) para gestionar
 las credenciales de acceso a la base de datos. Por eso, ha sido necesario la creación de un punto de entrada
 (*entrypoint*) específico para el contenedor del servicio web.
