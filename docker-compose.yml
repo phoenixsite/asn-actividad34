@@ -1,0 +1,57 @@
+services:
+  mariadb:
+    image: mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+      - MYSQL_DATABASE=notesdb
+      - MYSQL_USER_FILE=/run/secrets/db_user
+      - MYSQL_PASSWORD_FILE=/run/secrets/db_password
+      # Descomentar si hay problemas para incializar la BD de pruebas
+      # https://github.com/docker-library/mariadb/issues/160#issuecomment-528393445
+#     - MYSQL_INIT_SKIP_TZINFO=1
+    ports:
+      - 3306:3306
+    secrets:
+      - db_user
+      - db_password
+      - db_root_password
+
+  wwwserver:
+    build: .
+    image: asn/phpwebapp:v1
+    environment:
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+      - DB_USER_FILE=/run/secrets/db_user
+    ports:
+      # Fixed external port for HTTP direct access 
+      - "80"
+    scale: 2
+    volumes:
+      - ./html:/var/www/html
+    # limit resources for testing
+    cpus: .25
+    mem_limit: 48m
+    memswap_limit: 48m  # Swap not allowed if this value is equal to mem_limit
+    secrets:
+      - db_password
+      - db_user
+    depends_on:
+      - mariadb
+
+  haproxy:
+    image: asn/haproxy
+    build: haproxy/
+    ports:
+      - "80:80"
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+      - wwwserver
+
+secrets:
+  db_password:
+    file: db_password.txt
+  db_user:
+    file: db_user.txt
+  db_root_password:
+    file: db_root_password.txt
