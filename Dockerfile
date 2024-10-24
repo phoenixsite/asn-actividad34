@@ -6,7 +6,7 @@ RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/a
 
 
 # Adjust max apache clients (aprox. 38m of memory use )
-#RUN sed -i 's/MaxRequestWorkers.*150/MaxRequestWorkers\t30/' /etc/apache2/mods-available/mpm_prefork.conf
+RUN sed -i 's/MaxRequestWorkers.*150/MaxRequestWorkers\t30/' /etc/apache2/mods-available/mpm_prefork.conf
 
 RUN docker-php-ext-install pdo_mysql
 
@@ -19,8 +19,9 @@ ENV PORT=80
 
 EXPOSE 80
 
-COPY docker-entrypoint.sh /usr/local/bin
-ENTRYPOINT ["docker-entrypoint.sh"]
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint2.sh
+ENTRYPOINT ["docker-entrypoint2.sh"]
+
+CMD ["apache2-foreground"]
 
 #ENTRYPOINT ["",""]
-
